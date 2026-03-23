@@ -8,7 +8,7 @@ export const users = pgTable("users", {
 }) 
 
 
-export const transactions = pgTable("Transaction", {
+export const transactions = pgTable("transactions", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     title: varchar().notNull(),
     message: varchar(),
@@ -18,17 +18,17 @@ export const transactions = pgTable("Transaction", {
     groupId: integer().notNull().references(() => group.id),
 })
 
-export const group = pgTable("Group", {
+export const group = pgTable("groups", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar().notNull(),
     description: varchar(),
 })
 
-export const groupMember = pgTable("Group Member", {
+export const groupMember = pgTable("group_member", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
 
     userId: integer().notNull().references(() => users.id),
 
-    groupId: integer().notNull().references(() => transactions.id),
+    groupId: integer().notNull().references(() => group.id),
 })
 
