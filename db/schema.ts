@@ -3,7 +3,7 @@ import { pgTable, integer, varchar, decimal, pgEnum, timestamp, unique } from "d
 export const paymentTypeEnum = pgEnum("payment_type", ["cash", "online"]);
 export const groupRol = pgEnum("group_role", ["admin", "member"])
 
-export const users = pgTable("users", {
+export const usersSchema = pgTable("users", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     email: varchar().unique().notNull(),
     name: varchar().notNull(),
@@ -12,7 +12,7 @@ export const users = pgTable("users", {
 }) 
 
 
-export const transactions = pgTable("transactions", {
+export const transcationsSchema = pgTable("transactions", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     title: varchar().notNull(),
     message: varchar(),
@@ -20,28 +20,28 @@ export const transactions = pgTable("transactions", {
     type: paymentTypeEnum().notNull().default("cash"),
     time: timestamp().defaultNow().notNull(),
 
-    userId: integer().notNull().references(() => users.id),
-    groupId: integer().notNull().references(() => groups.id),
+    userId: integer().notNull().references(() => usersSchema.id),
+    groupId: integer().notNull().references(() => groupsSchema.id),
 })
 
-export const groups = pgTable("groups", {
+export const groupsSchema = pgTable("groups", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar().notNull(),
     description: varchar(),
 })
 
-export const groupMember = pgTable("group_member", {
+export const groupMemberSchema = pgTable("group_member", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     role: groupRol().default("member"),
 
-    userId: integer().notNull().references(() => users.id),
+    userId: integer().notNull().references(() => usersSchema.id),
 
-    groupId: integer().notNull().references(() => groups.id),
+    groupId: integer().notNull().references(() => groupsSchema.id),
 }, (column) => [
     unique().on(column.userId, column.groupId)
 ])
 
-export const groupTransaction = pgTable("group_transaction", {
+export const groupTransactionSchema = pgTable("group_transaction", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     title: varchar().notNull(),
     message: varchar(),
@@ -49,7 +49,7 @@ export const groupTransaction = pgTable("group_transaction", {
     type: paymentTypeEnum().notNull().default("cash"),
     time: timestamp().defaultNow().notNull(),
 
-    userId: integer().notNull().references(() => users.id),
-    groupId: integer().notNull().references(() => groups.id)
+    userId: integer().notNull().references(() => usersSchema.id),
+    groupId: integer().notNull().references(() => groupsSchema.id)
 })
 

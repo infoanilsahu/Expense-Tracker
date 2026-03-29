@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loginSchema } from "@/validation/usersData";
 import { db } from "@/db/db";
-import { users } from "@/db/schema";
+import { usersSchema } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs"
 import { generateToken } from "@/utils/generateToken";
@@ -21,10 +21,10 @@ export async function POST(req: NextRequest) {
     
         const { email, username, password } = result.data
     
-        const res = await db.select().from(users).where(
+        const res = await db.select().from(usersSchema).where(
             or(
-                email ? eq(users.email, email) : undefined,
-                username ? eq(users.username, username) : undefined
+                email ? eq(usersSchema.email, email) : undefined,
+                username ? eq(usersSchema.username, username) : undefined
             )
         )
         const user = res[0]

@@ -20,3 +20,9 @@ export const loginSchema = z.object({
     path: ["email"]
 })
 
+
+export const decodedToken = z.object({
+    id: z.coerce.number(),
+    username: z.string()
+})
+
