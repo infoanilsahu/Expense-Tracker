@@ -4,6 +4,8 @@ import { db } from "@/db/db";
 import { users } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs"
+import { generateToken } from "@/utils/generateToken";
+import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
     try {
@@ -37,6 +39,25 @@ export async function POST(req: NextRequest) {
         if( !isMatch ) {
             return NextResponse.json({success: false, message: "Invalid credential"}, {status: 401})
         }
+
+        // token
+        const token = generateToken({
+            id: user.id,
+            username: user.username
+        })
+
+        const cookieStore = await cookies()
+        cookieStore.set("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 24*60*60,
+            path: '/'
+        })
+
+        return NextResponse.json({
+            success: true,
+            message: "user logged in successfully"
+        }, {status: 200})
     
         
     } catch (error: any) {
