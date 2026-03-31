@@ -53,3 +53,14 @@ export const groupTransactionSchema = pgTable("group_transaction", {
     groupId: integer().notNull().references(() => groupsSchema.id)
 })
 
+
+export const verificationSchema = pgTable("email_verification", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    email: varchar().unique().notNull(),
+    name: varchar().notNull(),
+    username: varchar().unique().notNull(),
+    password: varchar().notNull(),
+    otp: varchar().notNull(),
+    otpExpiry: timestamp("otp_expiry").notNull(),
+})
+
