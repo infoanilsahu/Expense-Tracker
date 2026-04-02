@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { email, z } from "zod"
 
 export const userData = z.object({
     name: z.string().min(3, {error: "invalid name "}),
@@ -23,6 +23,11 @@ export const loginSchema = z.object({
 
 export const decodedToken = z.object({
     id: z.coerce.number(),
+    username: z.string()
+})
+
+export const resendOTP = z.object({
+    email: z.string(),
     username: z.string()
 })
 
