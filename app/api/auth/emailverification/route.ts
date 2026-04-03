@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         if( !verification ) {
             return NextResponse.json({
                 success: false,
-                message: "otp is expired "
+                message: "incorrect otp"
             }, {status: 400})
         }
         else if( !user.otpExpiry || user.otpExpiry.getTime() <  Date.now() ) {

@@ -5,7 +5,7 @@ import { resendOTP } from "@/validation/usersData";
 import bcrypt from "bcryptjs";
 import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
-import { email } from "zod";
+
 
 export async function POST(req: NextRequest) {
     try {
