@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     
         const isMatch = await bcrypt.compare(password, user.password)
         if( !isMatch ) {
-            return NextResponse.json({success: false, message: "Invalid credential"}, {status: 401})
+            return NextResponse.json({success: false, message: "Invalid credential"}, {status: 400})
         }
 
         // token
@@ -61,10 +61,11 @@ export async function POST(req: NextRequest) {
     
         
     } catch (error: any) {
+        console.error(error.message)
         return NextResponse.json({
             success: false,
-            message: error.message
-        })
+            message: "Failed to login"
+        }, {status: 500})
     }
 
 }

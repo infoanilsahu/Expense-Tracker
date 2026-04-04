@@ -49,9 +49,10 @@ export async function POST(req: NextRequest) {
         }, {status: 200})
 
     } catch (err: any) {
+        console.error(err.message)
         return NextResponse.json({
             success: false,
-            message: err.message
-        }, {status: 400})
+            message: "Failed to resend otp"
+        }, {status: 500})
     }
 }
