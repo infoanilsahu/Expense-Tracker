@@ -21,7 +21,7 @@ export const transcationsSchema = pgTable("transactions", {
     time: timestamp().defaultNow().notNull(),
 
     userId: integer().notNull().references(() => usersSchema.id),
-    groupId: integer().notNull().references(() => groupsSchema.id),
+    groupId: integer().references(() => groupsSchema.id).$type<number | null>()
 })
 
 export const groupsSchema = pgTable("groups", {
