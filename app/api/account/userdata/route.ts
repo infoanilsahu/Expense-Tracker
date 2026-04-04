@@ -1,4 +1,3 @@
-
 import { db } from "@/db/db";
 import { usersSchema, transcationsSchema } from "@/db/schema";
 import { TokenData } from "@/utils/tokenData";
@@ -17,7 +16,7 @@ export async function GET(req:NextRequest) {
         return NextResponse.json({
             success: false,
             message: "Invalid token"
-        }, { status: 401 });
+        }, { status: 400 });
     }
 
     const UsersRes = await db.select().from(usersSchema).where(eq(usersSchema.id, parseData.data.id))
@@ -52,9 +51,10 @@ export async function GET(req:NextRequest) {
 
      
    } catch (err: any) {
+    console.error(err.message)
     return NextResponse.json({
         success: false,
-        message: err.message
-    }, {status: 400})
+        message: "Failed to fetch user data"
+    }, {status: 500})
    }
 }

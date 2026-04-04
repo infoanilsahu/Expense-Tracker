@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({
                 success: false,
                 message: "Invalid token"
-            }, { status: 401 });
+            }, { status: 400 });
         }
     
         const cookieStore = await cookies()
@@ -25,10 +25,10 @@ export async function GET(req: NextRequest) {
         }, {status: 200})
 
     } catch (err:any) {
-        console.log(err.message);
+        console.error(err.message);
         return NextResponse.json({
             success: false,
-            message: err.message
+            message: "Failed to logout"
         }, {status: 500})
     }
 

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 success: false,
                 message: parseData.error.message
-            }, { status: 401 });
+            }, { status: 400 });
         }
     
         const { title, message, amount, type} = parseData.data
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
         console.log(err.message);
         return NextResponse.json({
             success: false,
-            message: err.message
+            message: "Failed to create transaction"
         }, {status: 500})
     }
     
