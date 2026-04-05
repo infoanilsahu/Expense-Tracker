@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         
         const json = await req.json()
         const ParseData = groupData.safeParse(json)
-        if( ParseData.error ) {
+        if( !ParseData.success ) {
             return NextResponse.json({
                 success: false, 
                 message: ParseData.error.message
