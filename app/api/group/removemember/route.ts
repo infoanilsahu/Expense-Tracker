@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
         console.error(err)
         return NextResponse.json({
             success: false,
-            message: "Failed to add members"
+            message: "Failed to remove members"
         }, {status: 500})
 
     }
