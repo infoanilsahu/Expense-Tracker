@@ -28,6 +28,7 @@ export const groupsSchema = pgTable("groups", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar().notNull(),
     description: varchar(),
+    admin: integer().notNull().references(() => usersSchema.id)
 })
 
 export const groupMemberSchema = pgTable("group_member", {
