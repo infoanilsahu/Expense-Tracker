@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
         const groupArr = await db.select().from(groupsSchema).where(
             eq(groupsSchema.id, groupId)
         )
-        if( !groupArr ) {
+        if( groupArr.length === 0 ) {
             return NextResponse.json({
                 success: false,
                 message: "group not exists"
