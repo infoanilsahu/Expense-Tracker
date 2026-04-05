@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { groupsSchema } from "@/db/schema";
+import { groupMemberSchema, groupsSchema } from "@/db/schema";
 import { TokenData } from "@/utils/tokenData";
 import { groupData } from "@/validation/groupData";
 import { decodedToken } from "@/validation/usersData";
@@ -28,10 +28,18 @@ export async function POST(req: NextRequest) {
         }
     
     
-        await db.insert(groupsSchema).values({
+        const groupArr = await db.insert(groupsSchema).values({
             name: ParseData.data.name,
             description: ParseData.data.description,
             admin: id
+        }).returning()
+
+        const group = groupArr[0]
+
+        await db.insert(groupMemberSchema).values({
+            groupId: group.id,
+            userId: id,
+            role: "admin"
         })
         
         return NextResponse.json({
