@@ -41,21 +41,18 @@ export async function POST(req: NextRequest) {
             }, {status: 400})
         }
 
-        const existsMember = await db.select().from(groupMemberSchema).where(and(
-            eq(groupMemberSchema.groupId, group.id),
+        const deleted = await db.delete(groupMemberSchema).where(and(
+            eq(groupMemberSchema.groupId, groupId),
             eq(groupMemberSchema.userId, userId)
-        ))
-        if( existsMember.length === 0 ) {
+        )).returning({ id: groupMemberSchema.id })
+
+        if( deleted.length === 0 ) {
             return NextResponse.json({
                 success: false,
                 message: "user not exists"
             }, {status: 400})
         }
 
-        await db.delete(groupMemberSchema).where(and(
-            eq(groupMemberSchema.groupId, groupId),
-            eq(groupMemberSchema.userId, userId)
-        ))
 
         return NextResponse.json({
             success: true,
